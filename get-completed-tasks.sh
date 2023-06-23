@@ -65,25 +65,6 @@ until [ -z "${IDS}" ]; do
 	      echo "${TASKS:1:${#TASKS}-2}" >> ${BACKUP_FILE}
     fi
 
-    IDS=$(echo ${TASKS} | jq ".task_id")
-
-    COMMANDS=()
-
-    for ID in ${IDS}; do
-        COMMANDS+=('{"type": "item_delete", "uuid": "'$(uuid)'", "args": {"id": '${ID}'}}')
-    done
-
-    COMMANDS=$(join_by , "${COMMANDS[@]}")
-
-    if [ "${VERBOSE}" == "true" ]; then
-        echo "Count: ${OFFSET}"
-    	echo "Deleting: $(join_by ' ' ${IDS})"
-    fi
-
-    curl -s https://api.todoist.com/sync/v8/sync \
-        -d token=${TOKEN}\
-        -d commands="[${COMMANDS}]" > /dev/null
-
     OFFSET=$((${OFFSET} + ${BATCH_SIZE}))
 
     sleep 2
