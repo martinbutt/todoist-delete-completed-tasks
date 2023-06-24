@@ -65,7 +65,7 @@ until [ -z "${IDS}" ]; do
 	      echo "${TASKS:1:${#TASKS}-2}" >> ${BACKUP_FILE}
     fi
 
-    IDS=$(echo ${TASKS} | jq ".task_id")
+    IDS=$(echo ${TASKS} | jq ".[] .task_id")
 
     COMMANDS=()
 
