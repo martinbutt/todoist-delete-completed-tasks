@@ -33,11 +33,16 @@ done
 
 if [ -z "${TOKEN}" ]; then
     usage
+    exit 1
 fi
 
 if ! command -v uuid 2>&1 > /dev/null; then
     echo "Error: uuid command required" 
     exit 1
+fi
+
+if [ -n "${BACKUP_FILE}" ]; then
+    echo "" > ${BACKUP_FILE}
 fi
 
 IDS=X
